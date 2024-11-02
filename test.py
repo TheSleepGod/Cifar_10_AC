@@ -7,16 +7,16 @@ from test_bench import ResnetBench, CnnBench
 
 
 if __name__ == '__main__':
-    root = 'D:\\大三下课程\\人工智能安全导论\\Cifar10-Adversarial-Competition\\'
+    root = 'D:\\cifar_10_AC\\Cifar10-Adversarial-Competition'
     parser = argparse.ArgumentParser()
     parser.add_argument('--bench', default='cnn')
-    parser.add_argument('--train_set', default='D:/Datasets/cifar-10-python')
-    parser.add_argument('--test_set', default='D:/Datasets/cifar10_clean_500')
+    parser.add_argument('--train_set', default='D:\\cifar_10_AC\\Cifar10-Adversarial-Competition\\cifar-10-python')
+    parser.add_argument('--test_set', default='D:\\cifar_10_AC\\Cifar10-Adversarial-Competition')
     # parser.add_argument('--attack_id', default=101)
-    parser.add_argument('--pretrain', default=0)
-    parser.add_argument('--checkpoint', default=115)
+    parser.add_argument('--pretrain', default=115)
+    parser.add_argument('--checkpoint', default=300)
     parser.add_argument('--batch_size', default=256)
-    parser.add_argument('--iteration', default=50)
+    parser.add_argument('--iteration', default=200)
     parser.add_argument('--cuda', default=True)
     args = parser.parse_args()
 

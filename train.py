@@ -10,12 +10,11 @@ from data import Cifar10Clean500
 from model import JacobianModel
 from test_bench import CnnBench
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--model')
     parser.add_argument('--bench', default='cnn')
-    parser.add_argument('--dataset', default='D:/Datasets/cifar10_clean_500')
+    parser.add_argument('--dataset', default='D:\cifar_10_AC\Cifar10-Adversarial-Competition')
     parser.add_argument('--checkpoint', default=115)
     parser.add_argument('--iteration', default=10)
     parser.add_argument('--cuda', default=True)
@@ -29,10 +28,10 @@ if __name__ == '__main__':
     # Init an attack model
     attacker = JacobianModel(classifier, 0.01)
     idx = 0
-    while os.path.exists('D:/Datasets/cifar10_clean_500/attack_{}'.format(idx)):
+    while os.path.exists('D:\cifar_10_AC\Cifar10-Adversarial-Competition\cifar10_clean_500\\attack_{}'.format(idx)):
         idx += 1
-    os.mkdir('D:/Datasets/cifar10_clean_500/attack_{}'.format(idx))
-    
+    os.mkdir('D:\cifar_10_AC\Cifar10-Adversarial-Competition\cifar10_clean_500\\attack_{}'.format(idx))
+
     # Load
     dataset = Cifar10Clean500(root=args.dataset)
     data = DataLoader(dataset, batch_size=1)
@@ -48,4 +47,4 @@ if __name__ == '__main__':
         img = img.cpu()
         img = img.squeeze(0)
         img = toPIL(img)
-        img.save('D:/Datasets/cifar10_clean_500/attack_{}/{}.png'.format(idx, step))            
+        img.save('D:\cifar_10_AC\Cifar10-Adversarial-Competition\cifar10_clean_500\\attack_{}\{}.png'.format(idx, step))

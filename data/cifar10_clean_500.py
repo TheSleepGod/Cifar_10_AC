@@ -24,7 +24,7 @@ class Cifar10Clean500(Dataset):
                 filename = content[0]
                 label = content[1]
                 if attack_id > 0:
-                    self.paths.append(os.path.join(root, 'attack_{}'.format(attack_id), filename))
+                    self.paths.append(os.path.join(root, 'cifar10_clean_500', 'attack_{}'.format(attack_id), filename))
                 else:
                     self.paths.append(os.path.join(root, 'images', filename))
                 self.labels.append(int(label))

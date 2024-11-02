@@ -12,7 +12,7 @@ class JacobianModel(BaseModel):
         self.attack_rate = attack_rate
 
     def __call__(self, imgs, labels):
-        jacobians = torch.autograd.functional.jacobian(func=self.net.__call__(), inputs=imgs)
+        jacobians = torch.autograd.functional.jacobian(func=lambda x: self.net(x), inputs=imgs)
         # print(jacobians.size())
         jacobians = f.normalize(jacobians)
         for i in range(imgs.size()[0]):

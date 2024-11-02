@@ -67,12 +67,13 @@ def binary2img(root_path, batch, save_cls):
     for i in range(0, 10000):
         img_ = np.reshape(img_dict[b'data'][i], (3, 32, 32))
         img_ = np.transpose(img_, (1, 2, 0))
+
         label_ = str(img_dict[b'labels'][i])
         save_path = os.path.join(root_path, 'cifar-10-output', save_cls, str(classification.get(label_)))
         if not os.path.exists(save_path):
             os.makedirs(save_path)
         pic_name = save_path + f'\\%d.png' % i
-        img_ = img_.transpose(1, 2, 0)
+        img_ = img_.transpose(0, 1, 2)
         img_ = Image.fromarray(img_, 'RGB')
         img_.save(pic_name)
 
