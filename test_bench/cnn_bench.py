@@ -1,3 +1,5 @@
+import os
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as f
@@ -37,7 +39,7 @@ class CnnBench(BaseBench):
     def model(self):
         return self.net
 
-    def train(self, data, iteration=200, lr=1e-2, save_root='./checkpoints/'):
+    def train(self, data, iteration=200, lr=0.05, save_root='./checkpoints/'):
         optim = torch.optim.SGD(self.net.parameters(), lr=lr, momentum=0.9)
         self.net.eval()
         train_loss = []  # 记录batch训练过程中的loss变化
@@ -49,6 +51,7 @@ class CnnBench(BaseBench):
                     imgs = imgs.cuda()
                     labels = labels.cuda()
                 # import pdb; pdb.set_trace();
+                optim.zero_grad()
                 predictions = self.net(imgs)
                 predictions = f.softmax(predictions, dim=1)
                 # print("predictions:{}, labels:{}".format(predictions, labels))
@@ -56,7 +59,6 @@ class CnnBench(BaseBench):
                 loss = f.cross_entropy(predictions, labels)
                 # print(predictions, labels)
                 # print("step: {}, loss: {}".format(step, loss))
-                optim.zero_grad()
                 loss.backward()
                 optim.step()
                 total_loss += loss.item()
@@ -73,12 +75,11 @@ class CnnBench(BaseBench):
         plt.ylabel("loss")
         plt.title("Train loss")
         plt.show()
-        # filepath = os.path.join(save_root, self.name)
-        # if not os.path.isdir(filepath):
-        #     # 创建文件夹
-        #     os.mkdir(filepath)
-        # if epoch % 1 == 0:
-        #     self.save(os.path.join(filepath, 'epoch{}.pth'.format(epoch)))
+        filepath = os.path.join(save_root, self.name)
+        if not os.path.isdir(filepath):
+            os.mkdir(filepath)
+        if iteration % 1 == 0:
+            self.save(os.path.join(filepath, 'epoch{}.pth'.format(iteration)))
 
     def test(self, data):
         self.net.eval()
