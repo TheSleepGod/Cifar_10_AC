@@ -34,7 +34,7 @@ class ResnetBench(BaseBench):
     def model(self):
         return self.resnet
 
-    def train(self, data, iteration=200, lr=1e-3, betas=(5e-3, 5e-3), save_root='./checkpoints/'):
+    def train(self, data, iteration=200, lr=1e-2, betas=(5e-3, 5e-3), save_root='./checkpoints/'):
         optim = torch.optim.Adam(self.resnet.fc.parameters(), lr=lr, betas=betas)
         self.resnet.eval()
         for epoch in range(iteration):
@@ -50,7 +50,7 @@ class ResnetBench(BaseBench):
                 loss.backward()
                 optim.step()
                 total_loss += loss.item()
-            print(total_loss)
+            print("epoch: {}, loss: {}".format(epoch, total_loss))
             
             if epoch % 5 == 0:
                 self.save(os.path.join(save_root, self.name, 'epoch{}.pth'.format(epoch)))
@@ -64,10 +64,16 @@ class ResnetBench(BaseBench):
                 img = img.cuda()
                 label = label.cuda()
             pred = self.resnet(img)
-            predictions.append(torch.argmax(pred, dim=1))
-            labels.append(torch.argmax(label, dim=1))
-        confusion_matrix = torch.confusion_matrix(predictions, labels)
-        return predictions, confusion_matrix
+            predictions.append(torch.argmax(pred))
+            labels.append(torch.argmax(label))
+            # confusion_matrix = F.confusion_matrix(predictions, labels)
+        acc = 0
+        for i in range(len(predictions)):
+            if predictions[i] == labels[i]:
+                acc += 1
+        acc /= len(predictions)
+        # print('Accuracy on test set:%d %%' % (acc))
+        return predictions, acc
 
     def save(self, path):
         torch.save(self.resnet.fc.state_dict(), path)

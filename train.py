@@ -9,19 +9,22 @@ from torch.utils.data import DataLoader
 from data import Cifar10Clean500
 from model import JacobianModel
 from test_bench import CnnBench
+from test_bench import ResnetBench
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--model')
     parser.add_argument('--bench', default='cnn')
     parser.add_argument('--dataset', default='D:\cifar_10_AC\Cifar10-Adversarial-Competition')
-    parser.add_argument('--checkpoint', default=115)
+    parser.add_argument('--checkpoint', default=55)
     parser.add_argument('--iteration', default=10)
     parser.add_argument('--cuda', default=True)
     args = parser.parse_args()
 
     # Load a white-box model
-    bench = CnnBench(10, args.bench)
+    # bench = CnnBench(10, args.bench)
+    #
+    bench = ResnetBench(10, args.bench)
     bench.load(os.path.join('./test_bench/checkpoints', args.bench, "epoch{}.pth".format(args.checkpoint)))
     classifier = bench.model()
 

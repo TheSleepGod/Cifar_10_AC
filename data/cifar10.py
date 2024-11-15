@@ -80,7 +80,7 @@ def binary2img(root_path, batch, save_cls):
 
 if __name__ == '__main__':
     root = 'D:\cifar_10_AC\Cifar10-Adversarial-Competition\cifar-10-python'
-    binary2img(root, 'data_batch_1', 'train')
+    binary2img(root, 'data_batch_2', 'train')
     dataset = Cifar10(root, train=True)
     print(dataset.paths[0], dataset.labels[0])
     data = DataLoader(dataset, batch_size=1)
